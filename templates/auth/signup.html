@@ -1,0 +1,134 @@
+{{define "auth/register.html"}}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <title>Gblog | Registration Page</title>
+    <!-- Tell the browser to be responsive to screen width -->
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <!-- Bootstrap 3.3.7 -->
+    <link rel="stylesheet" href="/static/libs/bootstrap/css/bootstrap.min.css">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="/static/libs/font-awesome/css/font-awesome.min.css">
+    <!-- Ionicons -->
+    <link rel="stylesheet" href="/static/libs/Ionicons/css/ionicons.min.css">
+    <!-- Theme style -->
+    <link rel="stylesheet" href="/static/libs/AdminLTE/css/AdminLTE.min.css">
+    <!-- iCheck -->
+    <link rel="stylesheet" href="/static/libs/iCheck/square/blue.css">
+    <link rel="stylesheet" href="/static/libs/verify/verify.css">
+
+    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+    <!--[if lt IE 9]>
+    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
+    <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <![endif]-->
+
+    <!-- Google Font -->
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Source+Sans+Pro:300,400,600,700,300italic,400italic,600italic">
+</head>
+<body class="hold-transition register-page">
+<div class="register-box">
+    <div class="register-logo">
+        <a href="/"><b>G</b>blog</a>
+    </div>
+
+    <div class="register-box-body">
+        {{if not .message}}
+        <p id="msg" class="login-box-msg"></p>
+        {{else}}
+        <p id="msg" class="login-box-msg text-danger">{{.message}}</p>
+        {{end}}
+        <form id="signupForm" action="" method="post" onsubmit="return checkPassword();">
+            <!--<div class="form-group has-feedback">
+                <input type="text" class="form-control" placeholder="Full name">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>-->
+            <div class="form-group has-feedback">
+                <input type="text" name="username" id="form-username" class="form-control" placeholder="用户名">
+                <span class="glyphicon glyphicon-user form-control-feedback"></span>
+            </div>
+            <div class="form-group has-feedback">
+                <input type="password" name="password" class="form-control" placeholder="密码" id="form-password">
+                <span class="glyphicon glyphicon-lock form-control-feedback"></span>
+            </div>
+            <div class="form-group has-img">
+                <div id="slider">
+                    <div id="slider_bg"></div>
+                    <span id="label">>></span> <span id="labelTip">拖动滑块验证</span>
+                </div>
+            </div>
+
+            <div class="row">
+
+                <!-- /.col -->
+                <div class="col-xs-pull-6">
+                    <button type="submit" id = "registerBtn" class="btn btn-primary btn-block btn-flat disabled">注册</button>
+                </div>
+                <!-- /.col -->
+            </div>
+        </form>
+        <hr/>
+
+        <p class="login-box-msg">已有账号？<a href="/login" class="text-center">去登录</a></p>
+    </div>
+    <!-- /.form-box -->
+</div>
+<!-- /.register-box -->
+
+<!-- jQuery 3 -->
+<script src="/static/libs/jquery/jquery.min.js"></script>
+<!-- Jquery Form-->
+<script src="http://malsup.github.com/jquery.form.js"></script>
+<!-- Bootstrap 3.3.7 -->
+<script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
+<!-- iCheck -->
+<script src="/static/libs/iCheck/icheck.min.js"></script>
+<script src="/static/libs/verify/verify.js"></script>
+<script src="/static/libs/layer/layer.js"></script>
+<script>
+
+</script>
+<script>
+    $(function () {
+        var slider = new SliderUnlock("#slider", {
+            successLabelTip: "验证成功"
+        }, function () {
+            $("#registerBtn").removeClass("disabled")
+        });
+        slider.init();
+
+        $('input').iCheck({
+            checkboxClass: 'icheckbox_square-blue',
+            radioClass: 'iradio_square-blue',
+            increaseArea: '20%' // optional
+        });
+    });
+
+    function checkPassword(){
+        if($("#form-password").val() != '' && $("#form-username").val() != ''){
+            return true;
+        }else{
+            alert("用户名和密码不能为空！");
+            return false;
+        }
+    }
+
+    $(document).ready(function() {
+        $('#signupForm').ajaxForm(function(data) {
+            if(data.code === '1'){
+                layer.alert("注册成功",function () {
+                    window.location.href = "/login"
+                })
+            }else{
+                layer.msg(data.msg)
+            }
+        });
+    });
+</script>
+</body>
+</html>
+{{end}}

@@ -1,0 +1,5 @@
+.back_image_login {
+ /*   width: 100%;
+    height: calc(10vh );*/
+    background: url("../image/login_back.png") no-repeat center top;
+}
