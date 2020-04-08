@@ -22,7 +22,9 @@ var DB *gorm.DB
 初始化数据库，并建立连接
 */
 func InitDB() (db *gorm.DB, err error) {
-	db, err = gorm.Open("mysql", "root:fxuing#@/go_blog?charset=utf8&parseTime=True&loc=Local")
+	//db, err = gorm.Open("mysql", "root:fxuing#@/go_blog?charset=utf8&parseTime=True&loc=Local")
+	db, err = gorm.Open("mysql", "root:Zopen2013@(120.78.66.185:13306)/go_blog?charset=utf8&parseTime=True&loc=Local")
+
 	if err != nil {
 		fmt.Println(err)
 		return nil, err

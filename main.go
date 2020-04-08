@@ -10,6 +10,10 @@ import (
 	"go-blog/src/common"
 	"go-blog/src/controller"
 	"go-blog/src/model"
+	"log"
+	"os"
+	"path/filepath"
+	"strings"
 )
 
 func main() {
@@ -20,9 +24,10 @@ func main() {
 	defer db.Close()
 
 	router := gin.Default()
-
-	router.LoadHTMLGlob("*/**/templates/**/*")
-	router.Static("/static", "F:/golang_workspace/go_projects/src/go-blog/static")
+	//router.LoadHTMLGlob(GetCurrentPath()+"/src/go-blog/templates/**/*")
+	//router.Static("/static", GetCurrentPath()+"/src/go-blog/static")
+	router.LoadHTMLGlob(filepath.Join(os.Getenv("GOPATH"), "/src/go-blog/templates/**/*"))
+	router.Static("/static", filepath.Join(os.Getenv("GOPATH"), "/src/go-blog/static"))
 
 	gob.Register(model.UserInfo{})
 	store := cookie.NewStore([]byte(common.ContextUserKey))
@@ -38,5 +43,21 @@ func main() {
 	router.GET("/register", controller.Register)
 	router.POST("/register", controller.RegisterPost)
 
+	router.GET("/blog/new", controller.NewBlog)
+
 	router.Run(":8000")
+}
+func getCurrentDirectory() string {
+	dir, err := filepath.Abs(filepath.Dir(os.Args[0]))
+	if err != nil {
+		fmt.Print(err)
+	}
+	return strings.Replace(dir, "\\", "/", -1)
+}
+func GetCurrentPath() string {
+	dir, err := os.Getwd()
+	if err != nil {
+		log.Fatal(err)
+	}
+	return strings.Replace(dir, "\\", "/", -1)
 }
