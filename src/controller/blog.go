@@ -1,11 +1,32 @@
 package controller
 
 import (
+	"fmt"
 	"github.com/gin-gonic/gin"
+	"go-blog/src/common"
+	"go-blog/src/model"
 	"net/http"
 )
 
 func NewBlog(c *gin.Context) {
-	c.HTML(http.StatusOK, "blog/new.html", nil)
+	user := common.GetSession(common.ContextUserKey, c)
+	userInfo, _ := user.(model.UserInfo)
+	c.HTML(http.StatusOK, "blog/new.html", gin.H{
+		"user": userInfo.Username,
+	})
+}
 
+func SaveBlog(c *gin.Context) {
+	blogInfo := model.BlogInfo{
+		Title:    c.PostForm("title"),
+		BlogBody: c.PostForm("blogBody"),
+	}
+	err := model.BlogInfoAdd(blogInfo)
+	if err != nil {
+		fmt.Println(err)
+	}
+	c.JSON(http.StatusOK, common.ResponseData{
+		Code: "1",
+		Msg:  "成功",
+	})
 }

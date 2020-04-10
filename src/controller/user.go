@@ -10,6 +10,12 @@ import (
 
 // ========================= 登录
 func LoginGet(c *gin.Context) {
+	user := common.GetSession(common.ContextUserKey, c)
+	userInfo, _ := user.(model.UserInfo)
+	if (model.UserInfo{}) != userInfo {
+		c.HTML(http.StatusOK, "index/index.html", nil)
+		return
+	}
 	c.HTML(http.StatusOK, "auth/login.html", nil)
 }
 func LoginPost(c *gin.Context) {

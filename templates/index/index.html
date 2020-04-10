@@ -1,195 +1,194 @@
 {{define "index/index.html"}}
-<!DOCTYPE html>
-<html lang="en">
+    <!DOCTYPE html>
+    <html lang="en">
 
-<head>
+    <head>
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <title>Blog | Home</title>
 
-    <title>Blog | Home</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="/static/libs/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
+        <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
+        <!--[if lt IE 9]>
+        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+        <![endif]-->
 
-    <!-- Custom CSS -->
-    <link href="/static/css/blog-home.css" rel="stylesheet">
 
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-    <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-    <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    </head>
 
-    <link rel="stylesheet" href="/static/css/base.css">
+    <body>
 
-</head>
+    {{template "navigation.html" .}}
 
-<body>
+    {{/*{{template "menu.html" .}}*/}}
+    <!-- Page Content -->
+    <div class="container">
 
-{{template "navigation.html" .}}
+        <div class="row">
 
-{{template "menu.html" .}}
-<!-- Page Content -->
-<div class="container">
+            <!-- Blog Entries Column -->
+            <div class="col-md-8">
 
-    <div class="row">
+                <!--<h1 class="page-header">
+                    Page Heading
+                    <small>Secondary Text</small>
+                </h1>-->
 
-        <!-- Blog Entries Column -->
-        <div class="col-md-8">
+                <section class="article">
+                    <!-- First Blog Post -->
+                    {{range $postkey,$postvalue:=.blogList}}
+                        <div class="articleInfo">
+                            <span><a class="articleTitle" href="/post/{{$postvalue.ID}}">{{$postvalue.Title}}</a></span>
+                            <span class="createdTime" style="margin-right: 10px;"></span>
+                        </div>
+                        <hr>
+                    {{end}}
+                </section>
 
-            <!--<h1 class="page-header">
-                Page Heading
-                <small>Secondary Text</small>
-            </h1>-->
+                <!-- Pager
+                <ul class="pager">
+                    <li class="previous">
+                        <a href="#">&larr; Older</a>
+                    </li>
+                    <li class="next">
+                        <a href="#">Newer &rarr;</a>
+                    </li>
+                </ul>-->
 
-            <section class="article">
-            <!-- First Blog Post -->
-
-            </section>
-
-            <!-- Pager
-            <ul class="pager">
-                <li class="previous">
-                    <a href="#">&larr; Older</a>
-                </li>
-                <li class="next">
-                    <a href="#">Newer &rarr;</a>
-                </li>
-            </ul>-->
-
-            <ul class="pager">
-                <li class="disabled"><a href="#">上一页</a></li>
-                <li class=""><a href="?page=">上一页</a></li>
-                <li></li>
+                <ul class="pager">
+                    <li class="disabled"><a href="#">上一页</a></li>
+                    <li class=""><a href="?page=">上一页</a></li>
+                    <li></li>
                     <li class=""><a href="">下一页</a></li>
                     <li class="disabled"><a href="#">下一页</a></li>
-            </ul>
+                </ul>
 
-        </div>
+            </div>
 
-        <!-- Blog Sidebar Widgets Column -->
-        <div class="col-md-4">
+            <!-- Blog Sidebar Widgets Column -->
+            <div class="col-md-4">
 
-            <!-- Blog Search Well -->
-            <div class="well">
-                <h5>文章搜索</h5>
-                <div class="input-group">
-                    <input type="text" class="form-control">
-                    <span class="input-group-btn">
+                <!-- Blog Search Well -->
+                <div class="well">
+                    <h5>文章搜索</h5>
+                    <div class="input-group">
+                        <input type="text" class="form-control">
+                        <span class="input-group-btn">
                             <button class="btn btn-default" type="button">
                                 <span class="glyphicon glyphicon-search"></span>
                         </button>
                         </span>
+                    </div>
+                    <!-- /.input-group -->
                 </div>
-                <!-- /.input-group -->
-            </div>
 
-            <!-- Blog Categories Well -->
-            <div class="well">
-                <h5><span class="glyphicon glyphicon-tag"></span> 文章标签</h5>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <ul class="list-unstyled">
-                            <li><a href=""></a>
-                            </li>
-                        </ul>
+                <!-- Blog Categories Well -->
+                <div class="well">
+                    <h5><span class="glyphicon glyphicon-tag"></span> 文章标签</h5>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href=""></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href=""></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
                     </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                        <ul class="list-unstyled">
-                            <li><a href=""></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.col-lg-6 -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
 
-            <!-- Side Widget Well -->
-            <div class="well">
-                <h5><span class="glyphicon glyphicon-folder-open"></span> 文章归档</h5>
-                <div class="row">
-                    <div class="col-lg-6">
-                        <ul class="list-unstyled">
-                            <li><a href=""></a>
-                            </li>
-                        </ul>
+                <!-- Side Widget Well -->
+                <div class="well">
+                    <h5><span class="glyphicon glyphicon-folder-open"></span> 文章归档</h5>
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href=""></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
+                        <div class="col-lg-6">
+                            <ul class="list-unstyled">
+                                <li><a href=""></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
                     </div>
-                    <!-- /.col-lg-6 -->
-                    <div class="col-lg-6">
-                        <ul class="list-unstyled">
-                            <li><a href=""></a>
-                            </li>
-                        </ul>
-                    </div>
-                    <!-- /.col-lg-6 -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
 
-            <div class="well">
-                <h5><span class="glyphicon glyphicon-fire"></span> 阅读最多</h5>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="list-unstyled">
-                            <li><a href=""></a></li>
-                        </ul>
+                <div class="well">
+                    <h5><span class="glyphicon glyphicon-fire"></span> 阅读最多</h5>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="list-unstyled">
+                                <li><a href=""></a></li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-12 -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
 
-            <div class="well">
-                <h5><span class="glyphicon glyphicon-comment"></span> 评论最多</h5>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="list-unstyled">
-                            <li><a href=""></a></li>
-                        </ul>
+                <div class="well">
+                    <h5><span class="glyphicon glyphicon-comment"></span> 评论最多</h5>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="list-unstyled">
+                                <li><a href=""></a></li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-12 -->
                     </div>
-                    <!-- /.col-lg-12 -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
-            </div>
 
-            <div class="well">
-                <h5><span class="glyphicon glyphicon-link"></span> 友情链接</h5>
-                <div class="row">
-                    <div class="col-lg-12">
-                        <ul class="list-unstyled">
-                            <li><a href="" target="_blank" title=""></a>
-                            </li>
-                        </ul>
+                <div class="well">
+                    <h5><span class="glyphicon glyphicon-link"></span> 友情链接</h5>
+                    <div class="row">
+                        <div class="col-lg-12">
+                            <ul class="list-unstyled">
+                                <li><a href="" target="_blank" title=""></a>
+                                </li>
+                            </ul>
+                        </div>
+                        <!-- /.col-lg-6 -->
                     </div>
-                    <!-- /.col-lg-6 -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
+
             </div>
 
         </div>
+        <!-- /.row -->
+
+        <hr>
+
+        {{template "footer.html"}}
 
     </div>
-    <!-- /.row -->
+    <!-- /.container -->
 
-    <hr>
+    <!-- jQuery -->
+    <script src="/static/libs/jquery/jquery.min.js"></script>
 
-   {{template "footer.html"}}
+    <!-- Bootstrap Core JavaScript -->
+    <script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
 
-</div>
-<!-- /.container -->
+    </body>
 
-<!-- jQuery -->
-<script src="/static/libs/jquery/jquery.min.js"></script>
-
-<!-- Bootstrap Core JavaScript -->
-<script src="/static/libs/bootstrap/js/bootstrap.min.js"></script>
-
-</body>
-
-</html>
+    </html>
 {{end}}

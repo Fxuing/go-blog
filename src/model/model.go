@@ -5,9 +5,9 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type BaseModel struct {
-}
-
+/**
+Model ===========================================
+*/
 type UserInfo struct {
 	gorm.Model
 	Username  string `gorm:"size:16"` // 用户名
@@ -16,11 +16,17 @@ type UserInfo struct {
 	PassWord  string `gorm:"size:16"` // 密码
 }
 
-var DB *gorm.DB
+type BlogInfo struct {
+	gorm.Model
+	Title    string `gorm:"size:255"`
+	BlogBody string `gorm:"type:text"`
+}
 
 /**
 初始化数据库，并建立连接
 */
+var DB *gorm.DB
+
 func InitDB() (db *gorm.DB, err error) {
 	//db, err = gorm.Open("mysql", "root:fxuing#@/go_blog?charset=utf8&parseTime=True&loc=Local")
 	db, err = gorm.Open("mysql", "root:Zopen2013@(120.78.66.185:13306)/go_blog?charset=utf8&parseTime=True&loc=Local")
@@ -29,14 +35,22 @@ func InitDB() (db *gorm.DB, err error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	exist := db.HasTable(UserInfo{})
-	if !exist {
-		db.CreateTable(UserInfo{})
+	var tables []interface{}
+	tables = append(tables, UserInfo{}, BlogInfo{})
+	for i := 0; i < len(tables); i++ {
+		exist := db.HasTable(tables[i])
+		if !exist {
+			db.CreateTable(tables[i])
+		}
 	}
+	db.LogMode(true)
 	DB = db
 	return db, err
 }
 
+/**
+User db  ===================================
+*/
 func UserAdd(userinfo UserInfo) error {
 	return DB.Create(&userinfo).Error
 }
@@ -48,4 +62,16 @@ func FindByUserNameAndPassWord(userinfo UserInfo) (*UserInfo, error) {
 	var user = UserInfo{}
 	err := DB.Where("username = ? and pass_word = ?", userinfo.Username, userinfo.PassWord).First(&user).Error
 	return &user, err
+}
+
+/**
+BlogInfo db =======================================
+*/
+func BlogInfoAdd(blogContext BlogInfo) error {
+	return DB.Create(&blogContext).Error
+}
+func BlogLoad() ([]*BlogInfo, error) {
+	var userList []*BlogInfo
+	err := DB.Order("created_at desc").Find(&userList).Error
+	return userList, err
 }

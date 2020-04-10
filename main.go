@@ -28,9 +28,7 @@ func main() {
 
 	gob.Register(model.UserInfo{})
 
-	store := cookie.NewStore([]byte(common.ContextUserKey))
-	store.Options(sessions.Options{HttpOnly: true, MaxAge: 3600 * 24, Path: "/"})
-	router.Use(sessions.Sessions(common.Session, store))
+	setGinSession(router)
 
 	router.GET("/", controller.Index)
 
@@ -42,6 +40,13 @@ func main() {
 	router.POST("/register", controller.RegisterPost)
 
 	router.GET("/blog/new", controller.NewBlog)
+	router.POST("/blog/saveBlog", controller.SaveBlog)
 
 	router.Run(":8000")
+}
+
+func setGinSession(router *gin.Engine) {
+	store := cookie.NewStore([]byte(common.ContextUserKey))
+	store.Options(sessions.Options{HttpOnly: true, MaxAge: 3600 * 24, Path: "/"})
+	router.Use(sessions.Sessions(common.Session, store))
 }

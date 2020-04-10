@@ -118,9 +118,8 @@
     $(document).ready(function() {
         $("#formData").ajaxForm(function(data) {
             if(data.code === '1'){
-                layer.alert("登录成功",function () {
-                    window.location.href = "/"
-                })
+                layer.msg("登录成功");
+                window.location.href = "/"
             }else{
                 layer.msg(data.msg)
             }

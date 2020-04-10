@@ -12,8 +12,14 @@ func Index(c *gin.Context) {
 
 	user := common.GetSession(common.ContextUserKey, c)
 	userInfo, _ := user.(model.UserInfo)
-	fmt.Println("===============userinfo:", userInfo)
+
+	blogList, err := model.BlogLoad()
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	c.HTML(http.StatusOK, "index/index.html", gin.H{
-		"user": userInfo.Username,
+		"user":     userInfo.Username,
+		"blogList": blogList,
 	})
 }
