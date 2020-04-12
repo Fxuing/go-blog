@@ -42,7 +42,7 @@
                     <!-- First Blog Post -->
                     {{range $postkey,$postvalue:=.blogList}}
                         <div class="articleInfo">
-                            <span><a class="articleTitle" href="/post/{{$postvalue.ID}}">{{$postvalue.Title}}</a></span>
+                            <span><a class="articleTitle" href="/blog/detail/{{$postvalue.ID}}">{{$postvalue.Title}}</a></span>
                             <span class="createdTime" style="margin-right: 10px;"></span>
                         </div>
                         <hr>

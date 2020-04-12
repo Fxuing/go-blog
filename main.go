@@ -41,6 +41,7 @@ func main() {
 
 	router.GET("/blog/new", controller.NewBlog)
 	router.POST("/blog/saveBlog", controller.SaveBlog)
+	router.GET("/blog/detail/:id", controller.DetailBlog)
 
 	router.Run(":8000")
 }

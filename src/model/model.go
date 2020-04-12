@@ -8,6 +8,7 @@ import (
 /**
 Model ===========================================
 */
+// 用户
 type UserInfo struct {
 	gorm.Model
 	Username  string `gorm:"size:16"` // 用户名
@@ -16,10 +17,21 @@ type UserInfo struct {
 	PassWord  string `gorm:"size:16"` // 密码
 }
 
+// 博客信息
 type BlogInfo struct {
 	gorm.Model
 	Title    string `gorm:"size:255"`
 	BlogBody string `gorm:"type:text"`
+	Comments []Comments
+}
+
+// 评论信息
+type Comments struct {
+	gorm.Model
+	BlogInfoId   uint
+	UserId       uint
+	UserInfo     UserInfo
+	CommentsBody string `gorm:"type:text"`
 }
 
 /**
@@ -35,14 +47,15 @@ func InitDB() (db *gorm.DB, err error) {
 		fmt.Println(err)
 		return nil, err
 	}
-	var tables []interface{}
-	tables = append(tables, UserInfo{}, BlogInfo{})
+	/*var tables []interface{}
+	tables = append(tables, UserInfo{}, BlogInfo{},Comments{})
 	for i := 0; i < len(tables); i++ {
 		exist := db.HasTable(tables[i])
 		if !exist {
 			db.CreateTable(tables[i])
 		}
-	}
+	}*/
+	db.AutoMigrate(&UserInfo{}, &BlogInfo{}, &Comments{})
 	db.LogMode(true)
 	DB = db
 	return db, err
@@ -75,3 +88,14 @@ func BlogLoad() ([]*BlogInfo, error) {
 	err := DB.Order("created_at desc").Find(&userList).Error
 	return userList, err
 }
+func BlogDetail(id int) (*BlogInfo, error) {
+	var blogInfo BlogInfo
+	var comments []Comments
+	err := DB.First(&blogInfo, id).Related(&comments).Error
+	blogInfo.Comments = comments
+	return &blogInfo, err
+}
+
+/**
+Comments
+*/
