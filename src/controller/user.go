@@ -45,6 +45,7 @@ func RegisterPost(c *gin.Context) {
 // =========================  登出
 func Logout(c *gin.Context) {
 	common.DelSession(common.ContextUserKey, c)
-	c.HTML(http.StatusOK, "index/index.html", nil)
+	Index(c)
+	//c.HTML(http.StatusOK, "index/index.html", nil)
 
 }

@@ -43,6 +43,8 @@ func main() {
 	router.POST("/blog/saveBlog", controller.SaveBlog)
 	router.GET("/blog/detail/:id", controller.DetailBlog)
 
+	router.POST("/blog/comment", controller.Comment)
+
 	router.Run(":8000")
 }
 

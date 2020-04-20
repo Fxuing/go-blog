@@ -28,10 +28,10 @@ type BlogInfo struct {
 // 评论信息
 type Comments struct {
 	gorm.Model
-	BlogInfoId   uint
-	UserId       uint
-	UserInfo     UserInfo
-	CommentsBody string `gorm:"type:text"`
+	BlogInfoId   int
+	UserInfoId   uint
+	CommentsBody string   `gorm:"type:text"`
+	UserInfo     UserInfo `gorm:"foreignkey:UserInfoId"`
 }
 
 /**
@@ -91,7 +91,16 @@ func BlogLoad() ([]*BlogInfo, error) {
 func BlogDetail(id int) (*BlogInfo, error) {
 	var blogInfo BlogInfo
 	var comments []Comments
+
 	err := DB.First(&blogInfo, id).Related(&comments).Error
+	for i := 0; i < len(comments); i++ {
+		var userInfo UserInfo
+		err := DB.Where("id = ?", comments[i].UserInfoId).Find(&userInfo).Error
+		if err != nil {
+			fmt.Print(err)
+		}
+		comments[i].UserInfo = userInfo
+	}
 	blogInfo.Comments = comments
 	return &blogInfo, err
 }
@@ -99,3 +108,6 @@ func BlogDetail(id int) (*BlogInfo, error) {
 /**
 Comments
 */
+func CommentAdd(comment Comments) error {
+	return DB.Create(&comment).Error
+}

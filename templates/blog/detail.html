@@ -137,20 +137,14 @@
                 <hr>
                 <comment>
                     <!-- Comment -->
-                    {{range .post.Comments}}
+                    {{range .blogInfo.Comments}}
                         <div class="media">
-                            <a class="pull-left" href="{{.GithubUrl}}" target="_blank">
-                                {{if .AvatarUrl}}
-                                    <img class="user-image" src="{{.AvatarUrl}}" alt="">
-                                {{else}}
-                                    <img class="user-image" src="http://placehold.it/64x64" alt="">
-                                {{end}}
-                            </a>
+
                             <div class="media-body">
-                                <h4 class="media-heading"><a href="{{.GithubUrl}}" target="_blank">{{.NickName}}</a>
-                                    <small>"06-01-02 15:04"</small>
+                                <h4 class="media-heading"><a href="" target="_blank">{{.UserInfo.Username}}</a>
+                                    <small>{{.CreatedAt}}</small>
                                 </h4>
-                                {{.Content}}
+                                {{.CommentsBody}}
                             </div>
                         </div>
                     {{end}}
@@ -161,19 +155,12 @@
                         <a href="/auth/github">登录发表评论</a>
                     {{else}}
                         <div id="messagebox" class="alert alert-danger" style="display: none;" role="alert"></div>
-                        <form id="commentForm" role="form" action="/visitor/new_comment" method="post">
-                            <input name="postId" type="hidden" value="{{.post.ID}}">
+                        <form id="commentForm" role="form" action="/blog/comment" method="post">
+                            <input name="blogInfoId" type="hidden" value="{{.blogInfo.ID}}">
                             <div class="form-group">
                                 <textarea name="content" class="form-control" id="inputContent" placeholder="评论"></textarea>
                             </div>
-                            <div class="row">
-                                <div class="col-md-8">
-                                    <input name="verifyCode" class="form-control" placeholder="验证码">
-                                </div>
-                                <div class="col-md-4">
-                                    <img src="/captcha" class="j-verifycode"/>
-                                </div>
-                            </div>
+
                             <div class="pull-right">
                                 <button type="submit" class="btn btn-primary">评论</button>
                             </div>
@@ -205,13 +192,9 @@
         $(document).ready(function() {
             // bind 'myForm' and provide a simple callback function
             $('#commentForm').ajaxForm(function(data) {
-                if(data.succeed){
+                if(data.code === "1"){
+                    layer.msg("评论成功")
                     window.location.href = window.location.href
-                }else{
-                    $('#messagebox').show();
-                    setTimeout(hideMessagebox,2000);
-                    $('#messagebox').html(data.message);
-                    $("input[name='verifyCode']").val('');
                 }
             });
         });

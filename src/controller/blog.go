@@ -47,3 +47,25 @@ func DetailBlog(c *gin.Context) {
 		"blogInfo": blogInfo,
 	})
 }
+
+func Comment(c *gin.Context) {
+	blogInfoId, err := strconv.Atoi(c.PostForm("blogInfoId"))
+	if err != nil {
+		fmt.Print(err)
+	}
+	user := common.GetSession(common.ContextUserKey, c)
+	userInfo, _ := user.(model.UserInfo)
+	comment := model.Comments{
+		BlogInfoId:   blogInfoId,
+		UserInfoId:   userInfo.ID,
+		CommentsBody: c.PostForm("content"),
+	}
+	err = model.CommentAdd(comment)
+	if err != nil {
+		fmt.Print(err)
+	}
+	c.JSON(http.StatusOK, common.ResponseData{
+		Code: "1",
+		Msg:  "成功",
+	})
+}
