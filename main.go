@@ -3,15 +3,16 @@ package main
 import (
 	"encoding/gob"
 	"fmt"
-	"github.com/gin-contrib/sessions"
-	"github.com/gin-contrib/sessions/cookie"
-	"github.com/gin-gonic/gin"
-	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"go-blog/src/common"
 	"go-blog/src/controller"
 	"go-blog/src/model"
 	"os"
 	"path/filepath"
+
+	"github.com/gin-contrib/sessions"
+	"github.com/gin-contrib/sessions/cookie"
+	"github.com/gin-gonic/gin"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 )
 
 func main() {
