@@ -152,7 +152,7 @@
 
                 <div class="media">
                     {{if not .user}}
-                        <a href="/auth/github">登录发表评论</a>
+                        <a href="/login">登录发表评论</a>
                     {{else}}
                         <div id="messagebox" class="alert alert-danger" style="display: none;" role="alert"></div>
                         <form id="commentForm" role="form" action="/blog/comment" method="post">
