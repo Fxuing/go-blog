@@ -20,8 +20,8 @@ var (
 )
 
 func nextId(lock *sync.RWMutex) (int64, error) {
-	//lock.Lock()
-	//defer lock.Unlock()
+	lock.Lock()
+	defer lock.Unlock()
 	currentStamp := time.Now().UnixNano() / 1e6 // 当前是时间戳（毫秒）
 	// 当前时间小于最后生成的时间
 	if currentStamp < last_stamp {
