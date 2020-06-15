@@ -1,8 +1,10 @@
 package model
 
 import (
+	"errors"
 	"fmt"
 	"github.com/jinzhu/gorm"
+	"sync"
 )
 
 /**
@@ -34,6 +36,23 @@ type Comments struct {
 	UserInfo     UserInfo `gorm:"foreignkey:UserInfoId"`
 }
 
+// 渠道信息 测试功能
+type ChannelInfo struct {
+	Id          int
+	ChannelName string
+	ChannelNo   string
+	ParentId    int
+}
+
+// 奖品信息
+type ActivityAward struct {
+	Id          int
+	AwardName   string
+	AwardTotal  int
+	Probability int
+	AwardDesc   string
+}
+
 /**
 初始化数据库，并建立连接
 */
@@ -55,7 +74,7 @@ func InitDB() (db *gorm.DB, err error) {
 			db.CreateTable(tables[i])
 		}
 	}*/
-	db.AutoMigrate(&UserInfo{}, &BlogInfo{}, &Comments{})
+	db.AutoMigrate(&UserInfo{}, &BlogInfo{}, &Comments{}, &ChannelInfo{}, &ActivityAward{}, &Student{}, &Class{})
 	db.LogMode(true)
 	DB = db
 	return db, err
@@ -110,4 +129,60 @@ Comments
 */
 func CommentAdd(comment Comments) error {
 	return DB.Create(&comment).Error
+}
+
+// ----------------
+func (channel *ChannelInfo) ChannelAdd(channelInfo ChannelInfo) error {
+	return DB.Create(&channelInfo).Error
+}
+func (channel *ChannelInfo) FindByParentId(id int) (channelInfo []*ChannelInfo, err error) {
+	err = DB.Where("parent_id = ?", id).Find(&channelInfo).Error
+	return channelInfo, err
+}
+
+// -------ActivityAward
+func SearchAward() (award []*ActivityAward, err error) {
+	err = DB.Find(&award).Error
+	return
+}
+func InventoryReduction(id int) error {
+	var lock sync.Mutex
+	award := new(ActivityAward)
+	award.Id = id
+	lock.Lock()
+	DB.Find(&award)
+	if award.AwardTotal <= 0 {
+		return errors.New("库存不足")
+	}
+	count := award.AwardTotal - 1
+	lock.Unlock()
+	return DB.Model(&award).Updates(map[string]interface{}{"award_total": count}).Error
+}
+
+type Student struct {
+	gorm.Model
+	Name      string `gorm:"size:64"`
+	Age       int    `gorm:"size:3"`
+	ClassInfo Class
+	ClassId   uint
+}
+
+type Class struct {
+	gorm.Model
+	ClassName string `gorm:"size:64"`
+	Students  []Student
+}
+
+func SearchClassById(id uint) (*Class, error) {
+	class := new(Class)
+	class.ID = id
+	err := DB.Find(&class).Related(&class.Students).Error
+	return class, err
+}
+
+func SearchStudentById(id uint) (*Student, error) {
+	student := new(Student)
+	student.ID = id
+	err := DB.Find(&student).Related(&student.ClassInfo).Error
+	return student, err
 }

@@ -23,3 +23,23 @@ func Index(c *gin.Context) {
 		"blogList": blogList,
 	})
 }
+
+func ClassById(c *gin.Context) {
+	class, err := model.SearchClassById(1)
+	if err != nil {
+		fmt.Println(err)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": class,
+	})
+}
+
+func StudentById(c *gin.Context) {
+	student, err := model.SearchStudentById(1)
+	if err != nil {
+		fmt.Println(err)
+	}
+	c.JSON(http.StatusOK, gin.H{
+		"data": student,
+	})
+}
